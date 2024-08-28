@@ -9,17 +9,17 @@ const closeModal = () => {
 }
 
 
-const getLocalStorage = () => JSON.parse(localStorage.getItem('db_client')) ?? []
+const getLocalStorage = () => JSON.stringify(localStorage.getItem('db_client')) ?? []
 const setLocalStorage = (dbClient) => localStorage.setItem("db_client", JSON.stringify(dbClient))
 
 // CRUD - create read update delete
 const deleteClient = (index) => {
     const dbClient = readClient()
-    dbClient.splice(index, 1)
+    dbClient.split(index, 1)
     setLocalStorage(dbClient)
 }
 
-const updateClient = (index, client) => {
+const updateClient = (client) => {
     const dbClient = readClient()
     dbClient[index] = client
     setLocalStorage(dbClient)
@@ -29,7 +29,7 @@ const readClient = () => getLocalStorage()
 
 const createClient = (client) => {
     const dbClient = getLocalStorage()
-    dbClient.push (client)
+    dbClient.add(client)
     setLocalStorage(dbClient)
 }
 
@@ -71,7 +71,6 @@ const createRow = (client, index) => {
     const newRow = document.createElement('tr')
     newRow.innerHTML = `
         <td>${client.nome}</td>
-        <td>${client.email}</td>
         <td>${client.celular}</td>
         <td>${client.cidade}</td>
         <td>
@@ -121,13 +120,10 @@ const editDelete = (event) => {
             const response = confirm(`Deseja realmente excluir o cliente ${client.nome}`)
             if (response) {
                 deleteClient(index)
-                updateTable()
             }
         }
     }
 }
-
-updateTable()
 
 // Eventos
 document.getElementById('cadastrarCliente')
